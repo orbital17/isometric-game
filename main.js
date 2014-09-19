@@ -279,15 +279,15 @@ var Handler = function(painter) {
 	var that = this;
 	this.canvas.onmousedown = function(e)
 	{
-		that.mouseDown(e.x, e.y);
+		that.mouseDown(e.clientX, e.clientY);
 	};
 	this.canvas.onmouseup = function(e)
 	{
-		that.mouseUp(e.x, e.y);
+		that.mouseUp(e.clientX, e.clientY);
 	};
 	this.canvas.onmousemove = function(e)
 	{
-		that.mouseMove(e.x, e.y);
+		that.mouseMove(e.clientX, e.clientY);
 	};
 	this.canvas.addEventListener('touchstart', function(e)
 	{
@@ -324,6 +324,12 @@ var Handler = function(painter) {
 	};
 
 	this.wasDrag = false;
+	this.keyByCode = {
+		38: "Up",
+		39: "Right",
+		40: "Down",
+		37: "Left"
+	}
 	this.keyPressed = {
 		"Up": false,
 		"Down": false,
@@ -359,15 +365,17 @@ Handler.prototype.mouseMove = function(x, y) {
 }
 
 Handler.prototype.keyDown = function(e) {
-	if (e.keyIdentifier in this.keyPressed && !this.keyPressed[e.keyIdentifier]) {
-		this.keyPressed[e.keyIdentifier] = true;
+	var key = this.keyByCode[e.keyCode];
+	if (key in this.keyPressed && !this.keyPressed[key]) {
+		this.keyPressed[key] = true;
 		this.updateCharacter();
 	}
 }
 
 Handler.prototype.keyUp = function(e) {
-	if (e.keyIdentifier in this.keyPressed) {
-		this.keyPressed[e.keyIdentifier] = false;
+	var key = this.keyByCode[e.keyCode];
+	if (key in this.keyPressed) {
+		this.keyPressed[key] = false;
 		this.updateCharacter();
 	}
 }
